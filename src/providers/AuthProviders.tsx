@@ -1,20 +1,62 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { auth } from '../lib/firebase';
+import { useCookies } from 'react-cookie';
 
 type User = {
     uid: string;
     displayName: string | null;
     email: string | null;
+    token: string | null;
+    isFirebase?: boolean;
 };
 
 type AuthContextType = {
     currentUser: User | null;
+    setToken: (token: string) => void;
+    setCustomUser: (user: User | null) => void;
+    setEmail: (email: string) => void;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType>({
+    currentUser:  null,
+    setToken: () => {},
+    setCustomUser: () => {},
+    setEmail: () => {}
+});
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [cookies, setCookie] = useCookies(['user']);
+    const initialUser = cookies.user ? cookies.user : null;
+    const [currentUser, setCurrentUser] = useState<User | null>(initialUser);
+    
+    const setToken = (token: string) => {
+        if(currentUser) {
+            const setUser = {
+                ...currentUser,
+                token: token
+            }
+            setCurrentUser(setUser);
+            setCookie("user", setUser, {path: "/"}); 
+        }
+    }
+
+    const setEmail = (email: string) => {  // 追加
+        if(currentUser) {
+            setCurrentUser({
+                ...currentUser,
+                email: email
+            });
+        }
+    }
+
+    const setCustomUser = (user: User | null) => {
+        setCurrentUser(user);
+        setCookie('user', user, { 
+            path: '/',
+            secure: true,
+            sameSite: 'strict'
+        });
+    }
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
@@ -23,18 +65,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     uid: firebaseUser.uid,
                     displayName: firebaseUser.displayName,
                     email: firebaseUser.email,
+                    token: currentUser?.token || "",
+                    isFirebase: true
                 };
-                setCurrentUser(user);
+                if(!currentUser || !currentUser.isFirebase) {
+                    setCurrentUser(user);
+                }
             } else {
-                setCurrentUser(null);
+                if(currentUser && !currentUser.isFirebase) {
+                    return;
+                }
             }
         });
 
         return () => unsubscribe(); // クリーンアップ関数
-    }, []);
+    }, [currentUser]);
+
+    const value = {
+        currentUser,
+        setToken,
+        setCustomUser,
+        setEmail
+    }
 
     return (
-        <AuthContext.Provider value={{ currentUser }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

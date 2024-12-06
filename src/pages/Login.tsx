@@ -8,9 +8,35 @@ import { MdOutlineEmail } from "react-icons/md";
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { auth, provider } from "../lib/firebase";
 import { useAuth } from "../providers/AuthProviders";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
+interface LoginProps {
+    email: string,
+    password: string,
+    uid: string,
+    displayName: string,
+    gmail: string
+}
 
 const Login = () => {
     const { currentUser } = useAuth();
+    const { setToken, setCustomUser } = useAuth(); 
+    const navigation = useNavigate();
+    const [isProfile, setIsProfile] = useState(null);
+    const [loginParam, setLoginParam] = useState({
+        email: "",
+        password: ""
+    })
+    const [googleParam, setGoogleParam] = useState({
+        uid: "",
+        displayName: "",
+        gmail: ""
+    })
+
+    // const googleEndpoint = "XXXXXX";
+    const loginEndpoint = `${process.env.REACT_APP_LOGIN_ENDPOINT}`;
+
     // Googleアカウントを使用してログイン
     const signInwithGoogle = async () => {
         const provider = new GoogleAuthProvider();
@@ -18,7 +44,14 @@ const Login = () => {
             prompt: 'select_account'
         });
         try {
-            await signInWithPopup(auth, provider);
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            // Googleの情報をjson式に格納
+            setGoogleParam({
+                uid: user.uid,
+                displayName: user.displayName as string,
+                gmail: user.email as string
+            })
         } catch (error) {
         console.log('Googleサインインエラー:', error);
         console.error(error);
@@ -33,18 +66,79 @@ const Login = () => {
             console.error('ログアウト失敗:', error);
         }
     }
+    
+    // const registGoogle = async() => {
+    //     try {
+    //         const res = await axios.post(googleEndpoint,googleParam, {
+    //             headers:{
+    //                 "Content-Type": "application/json"
+    //             }
+    //         })
+    //     } catch (error) {
+    //         console.log("Google登録に失敗しました。",error)
+    //     }
+    // }
 
-    // useEffect(() => {
-    //     console.log(currentUser)
-    // }, [currentUser])
+    // メール・パスワード認証
+    useEffect(() => {
+        // console.log(loginParam);
+        // console.log(currentUser);
+        console.log(googleParam);
+        // registGoogle();
+    }, [googleParam]);
+
+    const postHandler = async() => {
+        try {
+            const res = await axios.post(loginEndpoint, loginParam);
+            setLoginParam({
+                email: "",
+                password:""
+            })
+            console.log(res.data);
+            // setIsProfile(res.data.profile_created_at);
+            if(res.data.access) {
+                setCustomUser({
+                    uid: "",
+                    email: loginParam.email,
+                    displayName: null,
+                    token: res.data.access
+                });
+                setToken(res.data.access);
+            }
+            console.log(res);
+            if(res.data.profile_created_at === null) {
+                navigation("/regist-profile");
+            } else {
+                navigation("/home");
+            }
+        } catch(error) {
+            console.log(error);
+        }
+    } 
 
     return(
         <div className="w-full h-auto flex flex-col items-center">
-            <Typography className="pt-4" variant="h3" gutterBottom>ログイン</Typography>
+            <Typography 
+                className="pt-4" 
+                variant="h3" 
+                gutterBottom
+                sx={{
+                    fontSize: {
+                        xs: '2rem',     
+                        sm: '2.5rem',   
+                        md: '3rem',     
+                        lg: '3.5rem',   
+                    },
+                    textAlign: 'center',
+                    fontWeight: 'bold'
+                }}
+            >
+                ログイン
+            </Typography>
             <Box
                 sx={{
                     height: "auto",
-                    width: "60%",
+                    width: "90%",
                     my: 4,
                     gap: 4,
                     p: 2,
@@ -79,7 +173,11 @@ const Login = () => {
                                 </Typography>
                             </InputLabel>
                             <TextField
-                                id="custom-textfield"
+                                value={loginParam.email}
+                                onChange={(e) =>{
+                                    setLoginParam({...loginParam, email: e.target.value})
+                                }}
+                                id="input-email"
                                 variant="outlined"
                                 placeholder="hoge@example.com"
                                 fullWidth
@@ -99,24 +197,37 @@ const Login = () => {
                             </Typography>
                         </InputLabel>
                         <TextField
-                            id="custom-textfield"
+                            value={loginParam.password}
+                            onChange={(e) =>{
+                                setLoginParam({...loginParam, password: e.target.value})
+                            }}
+                            id="input-password"
                             variant="outlined"
+                            type='password'
                             fullWidth
                         />
                     </FormControl>
                 </div>
                 <Stack direction="row" spacing={2} className="flex justify-center my-8">
-                    <Button variant="outlined" startIcon={<MdOutlineEmail />} className="w-64 h-16" sx={{borderRadius: '30px'}}>
+                    <Button 
+                        variant="outlined" 
+                        startIcon={<MdOutlineEmail />} 
+                        className="w-64 h-16" 
+                        sx={{borderRadius: '30px'}} 
+                        onClick={postHandler}
+                    >
                         メールアドレスでログイン
                     </Button>
                 </Stack>
+                <div className="text-center">
+                    <a href="/regist-page" style={{ color: 'blue', textDecoration: 'underline' }}>
+                        会員登録はこちら
+                    </a>
+                </div>
             </Box>
-            <Button variant="outlined" color="warning" className="w-32 h-16" onClick={signOutHandler}>
+            {/* <Button variant="outlined" color="warning" className="w-32 h-16" onClick={signOutHandler}>
                     ログアウト
-            </Button>
-            <div>
-                <a href="/regist-page">会員登録はこちら</a>
-            </div>
+            </Button> */}
         </div>
     )
 }
