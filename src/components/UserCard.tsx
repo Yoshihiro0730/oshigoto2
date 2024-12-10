@@ -13,11 +13,12 @@ interface UserCardProps {
     userName: string,
     imgUrl: string,
     description: string,
+    onClick?: () => void,
 }
 
 
 
-const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, description }) => {
+const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, description, onClick }) => {
     const [isHeart, setIsHeart] = useState(false);
     const handleHeart = () => {
         console.log("いいねを押しました！", userId)
@@ -30,11 +31,15 @@ const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, descripti
                 display: 'flex',
                 flexDirection: 'column'
                 }} 
-            className="my-4 mx-6">
+            className="my-4 mx-6"
+            onClick={onClick}
+        >
             <CardMedia
                 sx={{
                         height: 140,
                         backgroundSize: 'contain',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
                         backgroundColor: 'grey.100'
                     }}
                 image={imgUrl}
