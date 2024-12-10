@@ -50,10 +50,10 @@ const Header = () => {
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 fontSize: {
-                                    xs: '1.5rem',
-                                    sm: '2rem',
-                                    md: '2.5rem',
-                                    lg: '3rem' 
+                                    xs: '1.0rem',
+                                    sm: '1.5rem',
+                                    md: '2.0rem',
+                                    lg: '2.5rem' 
                                 },
                                 margin: {
                                     xs: '0.5rem 0',
