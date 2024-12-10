@@ -11,13 +11,14 @@ import { useCookies } from 'react-cookie';
 import { useAuth } from "../providers/AuthProviders";
 
 interface UserCardProps {
-    userId: string;
-    userName: string;
-    imgUrl: string;
-    description: string;
+    userId: string,
+    userName: string,
+    imgUrl: string,
+    description: string,
+    onClick?: () => void,
 }
 
-const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, description }) => {
+const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, description, onClick }) => {
     const getLikesEndpoint = `${process.env.REACT_APP_GET_LIKES_ENDPOINT}`; 
     const sendLikeEndpoint = `${process.env.REACT_APP_SEND_LIKE_ENDPOINT}`;
     // const getLikesEndpoint = "https://9453-1-75-223-48.ngrok-free.app/api/get-likes/"; 
@@ -99,11 +100,15 @@ const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, descripti
                 display: 'flex',
                 flexDirection: 'column'
                 }} 
-            className="my-4 mx-6">
+            className="my-4 mx-6"
+            onClick={onClick}
+        >
             <CardMedia
                 sx={{
                         height: 140,
                         backgroundSize: 'contain',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
                         backgroundColor: 'grey.100'
                     }}
                 image={imgUrl}

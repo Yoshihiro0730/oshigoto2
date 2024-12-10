@@ -64,10 +64,12 @@ const ResistProfile: React.FC = () => {
         specialization: "",
         challenges: "",
         dislikes: "",
-        free_text: ""
+        free_text: "",
+        imgUrl: ""
     })
     const { currentUser, setToken } = useAuth();
     const [cookies] = useCookies(['user']);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     // 年月日の選択肢を生成
     const years = Array.from({length: 100}, (_, i) => new Date().getFullYear() - i);
@@ -78,12 +80,12 @@ const ResistProfile: React.FC = () => {
     const profileEndpoint = `${process.env.REACT_APP_REGIST_PROFILE_ENDPOINT}`;
 
     const handleInputData = (e: any) => {
-        const { name, value } = e.target;
+        const { name, value, files } = e.target;
         setUserProfile(data => ({
             ...data,
             [name]: name === 'age' ? parseInt(value, 10) : value
-          }));
-    };
+        }));
+    }
 
     const handleButton = async(job: string) => {
         console.log('Cookie中のユーザー情報:', cookies.user);
@@ -133,7 +135,8 @@ const ResistProfile: React.FC = () => {
             console.log(response)
         } finally {
             setIsLoading(false)
-            navigation("/home")
+            navigation("/profile-image")
+            console.log(userProfile)
         }
     };
 

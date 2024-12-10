@@ -34,6 +34,8 @@ const Login = () => {
         gmail: ""
     })
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     // const googleEndpoint = "XXXXXX";
     const loginEndpoint = `${process.env.REACT_APP_LOGIN_ENDPOINT}`;
 
@@ -88,7 +90,9 @@ const Login = () => {
     }, [googleParam]);
 
     const postHandler = async() => {
+        if (isSubmitting) return;
         try {
+            setIsSubmitting(true);
             const res = await axios.post(loginEndpoint, loginParam);
             setLoginParam({
                 email: "",
@@ -113,8 +117,14 @@ const Login = () => {
             }
         } catch(error) {
             console.log(error);
+        } finally {
+            setIsSubmitting(false);
         }
     } 
+
+    useEffect(() => {
+        console.log(loginParam);
+    }, [loginParam]);
 
     return(
         <div className="w-full h-auto flex flex-col items-center">
