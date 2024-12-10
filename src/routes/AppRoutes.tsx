@@ -4,6 +4,9 @@ import Header from '../components/Header';
 import Resistration from '../pages/Registration';
 import ResistProfile from '../pages/RegistProfile';
 import Home from '../pages/Home';
+import ApproveLike from '../pages/ApproveLikes';
+import DirectMessage from '../pages/DirectMessage';
+
 const AppRoutes = () => (
     <>
         <Header />
@@ -12,6 +15,8 @@ const AppRoutes = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/regist-page" element={<Resistration />} />
             <Route path="/regist-profile" element={<ResistProfile />} />
+            <Route path="/approve-like" element={<ApproveLike />} />
+            <Route path="/direct-message" element={<DirectMessage />} />
         </Routes>
     </>
 );
