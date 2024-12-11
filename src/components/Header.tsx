@@ -63,6 +63,7 @@ const Header = () => {
                             }}
                         >
                             Oshigoto
+                            
                         </Typography>
                     </div>
                     { currentUser != null ? (
