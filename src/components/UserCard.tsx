@@ -10,14 +10,27 @@ import { FaHeart } from "react-icons/fa";
 import { useCookies } from 'react-cookie';
 import { useAuth } from "../providers/AuthProviders";
 
-interface UserCardProps {
-    userId: string;
-    userName: string;
-    imgUrl: string;
-    description: string;
+type UserCardProps = {
+    users:{
+        userId: string,
+        userName: string,
+        imgUrl: string,
+        roles: string,
+        group: string,
+        awards: string,
+        birthday: string,
+        challenges: string,
+        dislikes: string,
+        workhistory: string,
+        portfolio: string,
+        specialization: string,
+        free_text: string,
+        job_title: string
+    }
+    onClick?: () => void,
 }
 
-const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, description }) => {
+const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
     const getLikesEndpoint = `${process.env.REACT_APP_GET_LIKES_ENDPOINT}`; 
     const sendLikeEndpoint = `${process.env.REACT_APP_SEND_LIKE_ENDPOINT}`;
     // const getLikesEndpoint = "https://9453-1-75-223-48.ngrok-free.app/api/get-likes/"; 
@@ -49,7 +62,7 @@ const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, descripti
 
                 const data = await res.json();
                 const sentLikes = data?.data?.sent_likes || [];
-                const hasLiked = sentLikes.some((like: any) => like.receiver__user_id === userId);
+                const hasLiked = sentLikes.some((like: any) => like.receiver__user_id === users.userId);
                 setIsHeart(hasLiked);
             } catch (error) {
                 console.error("いいね情報の取得エラー:", error);
@@ -57,7 +70,7 @@ const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, descripti
         };
 
         fetchLikes();
-    }, [token, userId, getLikesEndpoint]);
+    }, [token, users.userId, getLikesEndpoint]);
 
     const handleHeart = async () => {
         if (isHeart) {
@@ -77,7 +90,7 @@ const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, descripti
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ receiver_id: userId }),
+                body: JSON.stringify({ receiver_id: users.userId }),
             });
 
             if (!res.ok) {
@@ -99,29 +112,51 @@ const UserCard: React.FC<UserCardProps> = ({ userId, userName, imgUrl, descripti
                 display: 'flex',
                 flexDirection: 'column'
                 }} 
-            className="my-4 mx-6">
+            className="my-4 mx-6"
+        >
             <CardMedia
                 sx={{
                         height: 140,
                         backgroundSize: 'contain',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
                         backgroundColor: 'grey.100'
                     }}
-                image={imgUrl}
-                title={userName}
+                image={users.imgUrl}
+                title={users.userName}
+                onClick={onClick}
             />
             <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="div">
-                    {userName}
+                    {users.userName}
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {description}
+                    {users.job_title}
                 </Typography>
             </CardContent>
             <CardActions>
                 {isHeart ? 
-                    <Button size="large" onClick={handleHeart}><FaHeart /></Button> 
+                    <Button 
+                        size="large" 
+                        onClick={handleHeart}
+                        sx={{ 
+                            color: 'blue' ,
+                            zIndex: 10
+                        }}
+                    >
+                        <FaHeart />
+                    </Button> 
                 : 
-                    <Button size="large" onClick={handleHeart}><FiHeart /></Button>
+                    <Button 
+                        size="large" 
+                        onClick={handleHeart}
+                        sx={{
+                            color: 'blue' ,
+                            zIndex: 10
+                        }}
+                    >
+                        <FiHeart />
+                    </Button>
                 }
             </CardActions>
         </Card>
