@@ -135,6 +135,7 @@ const ResistProfile: React.FC = () => {
             console.log(response)
         } finally {
             setIsLoading(false)
+            
             navigation("/profile-image")
             console.log(userProfile)
         }
