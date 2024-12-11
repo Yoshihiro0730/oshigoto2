@@ -37,7 +37,7 @@ const Header = () => {
     }
     return(
         <Box sx = {{ width: "100%" }}>
-            <AppBar position="static" style={{ backgroundColor: '#fffdf3', color: '#000' }}>
+            <AppBar position="static" style={{ backgroundColor: '#fff', color: '#000' }}>
                 <Toolbar>
                     <div className="flex items-center flex-grow">
                         <GiDolphin className="text-2xl mx-2" onClick={handleHome} />
