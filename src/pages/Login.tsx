@@ -105,7 +105,8 @@ const Login = () => {
                     uid: "",
                     email: loginParam.email,
                     displayName: null,
-                    token: res.data.access
+                    token: res.data.access,
+                    roles: res.data.roles[0]
                 });
                 setToken(res.data.access);
             }

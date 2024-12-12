@@ -124,12 +124,12 @@ const ApproveLikes: React.FC = () => {
                 <Grid container spacing={3} justifyContent="center" alignItems="center">
                     {likes.map((like) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={like.sender__user_id}>
-                            <UserCard
+                            {/* <UserCard
                                 userId={like.sender__user_id}
                                 userName={like.sender__username}
                                 imgUrl="https://via.placeholder.com/150"
                                 description={`送信者: ${like.sender__email}`}
-                            />
+                            /> */}
                             <Box sx={{ textAlign: 'center', marginTop: 2 }}>
                                 <Button
                                     variant="contained"
