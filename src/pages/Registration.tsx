@@ -44,7 +44,8 @@ const Resistration = () => {
                     uid: res.data.user.id || "",
                     email: registData.email,
                     displayName: null,
-                    token: res.data.tokens.access
+                    token: res.data.tokens.access,
+                    roles: res.data.roles[0]
                 });
                 setToken(res.data.tokens.access);
             }

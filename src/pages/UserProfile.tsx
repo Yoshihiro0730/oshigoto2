@@ -35,17 +35,17 @@ const UserProfile = () => {
             <div className="flex pl-4 pt-4">
                 <Typography variant="h4" component="div" 
                     sx={{
-                        fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                        fontFamily: 'Noto Sans JP, sans-serif',
                         letterSpacing: '0.1em',
                         fontWeight: 'bold',
                         fontSize: {
-                            xs: '1.0rem',
-                            sm: '1.5rem',
+                            xs: '2.0rem',
+                            sm: '2.0rem',
                             md: '2.0rem',
                             lg: '2.5rem' 
                         },
                         textAlign: { xs: 'center', sm: 'left' },
-                        width: '100%' 
+                        width: '100%'
                     }}
                 >
                     {user.userName}
@@ -60,7 +60,7 @@ const UserProfile = () => {
                         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                     }}
             > 
-                <Grid container spacing={3} display="flex" 
+                <Grid container spacing={2} display="flex" 
                         sx={{
                             flexDirection: { xs: 'column', sm: 'row' },
                         }}
@@ -69,8 +69,8 @@ const UserProfile = () => {
                             flexShrink: 0,
                             display: 'flex',
                             justifyContent: { xs: 'center', sm: 'flex-start' },
-                            width: { xs: '100%', sm: '20%' },
-                            height: { xs: 'auto', sm: '20%' },
+                            width: { xs: '100%', sm: '30%' },
+                            height: { xs: 'auto', sm: 'auto' },
                             aspectRatio: "1"
                         }} 
                         className="mx-4"
@@ -81,12 +81,13 @@ const UserProfile = () => {
                                 height: 'auto',
                                 objectFit: 'contain',
                             }}
+                            className="pt-4"
                         />
                     </Box>
                     <div style={{ flexGrow: 1}} className="mx-16 my-4">
-                        <Typography variant="h5" component="div" 
+                        <Typography variant="h4" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 marginBottom: 2 
@@ -96,16 +97,16 @@ const UserProfile = () => {
                         </Typography>
                         <Typography variant="h6" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 marginBottom: 4 
                             }}
                         >
                             {user.group}
                         </Typography>
-                        <Typography variant="h5" component="div" 
+                        <Typography variant="h4" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 marginBottom: 2 
@@ -115,16 +116,16 @@ const UserProfile = () => {
                         </Typography>
                         <Typography variant="h6" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 marginBottom: 4 
                             }}
                         >
                             {user.gender}
                         </Typography>
-                        <Typography variant="h5" component="div" 
+                        <Typography variant="h4" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 marginBottom: 2 
@@ -134,16 +135,16 @@ const UserProfile = () => {
                         </Typography>
                         <Typography variant="h6" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 marginBottom: 4 
                             }}
                         >
                             {user.awards}
                         </Typography>
-                        <Typography variant="h5" component="div" 
+                        <Typography variant="h4" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 marginBottom: 2 
@@ -153,16 +154,16 @@ const UserProfile = () => {
                         </Typography>
                         <Typography variant="h6" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 marginBottom: 4 
                             }}
                         >
                             {user.specialization}
                         </Typography>
-                        <Typography variant="h5" component="div" 
+                        <Typography variant="h4" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 marginBottom: 2 
@@ -172,16 +173,16 @@ const UserProfile = () => {
                         </Typography>
                         <Typography variant="h6" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 marginBottom: 4 
                             }}
                         >
                             {user.challenges}
                         </Typography>
-                        <Typography variant="h5" component="div" 
+                        <Typography variant="h4" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 marginBottom: 2 
@@ -191,16 +192,16 @@ const UserProfile = () => {
                         </Typography>
                         <Typography variant="h6" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 marginBottom: 4 
                             }}
                         >
                             {user.dislikes}
                         </Typography>
-                        <Typography variant="h5" component="div" 
+                        <Typography variant="h4" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 marginBottom: 2 
@@ -210,7 +211,7 @@ const UserProfile = () => {
                         </Typography>
                         <Typography variant="h6" component="div" 
                             sx={{
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Noto Sans JP, sans-serif',
                                 letterSpacing: '0.1em',
                                 marginBottom: 4 
                             }}
