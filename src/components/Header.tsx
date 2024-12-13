@@ -25,6 +25,9 @@ const Header = () => {
     const handleHome = () => {
         navigation('/home')
     }
+    const handleApproveLikes = () => {
+        navigation('/approve-like')
+    }
     const signOutHandler = async() => {
         try {
             await signOut(auth);
@@ -33,8 +36,10 @@ const Header = () => {
             alert('ログアウトに成功しました。');
         } catch (error) {
             console.error('ログアウト失敗:', error);
+        } finally {
+            navigation('/login')
         }
-    }
+    } 
     return(
         <Box sx = {{ width: "100%" }}>
             <AppBar position="fixed" style={{ backgroundColor: '#fff', color: '#000' }}>
@@ -82,7 +87,7 @@ const Header = () => {
                                 fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2rem' },
                                 mx: 1
                             }}>
-                                <FiHeart style={{ margin: 'auto' }} />
+                                <FiHeart style={{ margin: 'auto' }} onClick={handleApproveLikes}  />
                             </Box>
                             <Box sx={{ 
                                 fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2rem' },
