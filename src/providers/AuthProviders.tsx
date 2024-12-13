@@ -7,6 +7,7 @@ type User = {
     displayName: string | null;
     email: string | null;
     token: string | null;
+    roles: string | null;
     isFirebase?: boolean;
 };
 
@@ -66,6 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     displayName: firebaseUser.displayName,
                     email: firebaseUser.email,
                     token: currentUser?.token || "",
+                    roles: currentUser?.roles || "",
                     isFirebase: true
                 };
                 if(!currentUser || !currentUser.isFirebase) {

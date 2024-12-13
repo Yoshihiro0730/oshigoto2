@@ -63,6 +63,7 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
                 const data = await res.json();
                 const sentLikes = data?.data?.sent_likes || [];
                 const hasLiked = sentLikes.some((like: any) => like.receiver__user_id === users.userId);
+                console.log(hasLiked);
                 setIsHeart(hasLiked);
             } catch (error) {
                 console.error("いいね情報の取得エラー:", error);
@@ -100,6 +101,7 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
             }
 
             setIsHeart(true); // いいね送信成功時にボタンを青色に変更
+            console.log("いいねを送信しました。")
         } catch (error) {
             console.error("予期しないエラー:", error);
         }
@@ -110,7 +112,9 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
             sx={{ 
                 height: '100%',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                borderRadius: 5,
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 }} 
             className="my-4 mx-6"
         >
@@ -127,10 +131,24 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
                 onClick={onClick}
             />
             <CardContent sx={{ flexGrow: 1 }}>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography 
+                    gutterBottom 
+                    variant="h5" 
+                    component="div"
+                    sx={{
+                        fontFamily: 'Noto Sans JP, sans-serif',
+                    }}
+                >
                     {users.userName}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                <Typography
+                    variant="body2"
+                    sx={{ 
+                        color: 'text.secondary' ,
+                        fontFamily: 'Noto Sans JP, sans-serif',
+                    
+                    }}
+                >
                     {users.job_title}
                 </Typography>
             </CardContent>
@@ -140,8 +158,7 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
                         size="large" 
                         onClick={handleHeart}
                         sx={{ 
-                            color: 'blue' ,
-                            zIndex: 10
+                            color: 'blue'
                         }}
                     >
                         <FaHeart />
@@ -151,8 +168,7 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
                         size="large" 
                         onClick={handleHeart}
                         sx={{
-                            color: 'blue' ,
-                            zIndex: 10
+                            color: 'blue'
                         }}
                     >
                         <FiHeart />

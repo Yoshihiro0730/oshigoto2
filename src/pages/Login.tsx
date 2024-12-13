@@ -10,6 +10,7 @@ import { auth, provider } from "../lib/firebase";
 import { useAuth } from "../providers/AuthProviders";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import Loading from "../components/Loading";
 
 interface LoginProps {
     email: string,
@@ -24,6 +25,7 @@ const Login = () => {
     const { setToken, setCustomUser } = useAuth(); 
     const navigation = useNavigate();
     const [isProfile, setIsProfile] = useState(null);
+    const [isLoading,setIsLoading] = useState(false)
     const [loginParam, setLoginParam] = useState({
         email: "",
         password: ""
@@ -91,6 +93,7 @@ const Login = () => {
 
     const postHandler = async() => {
         if (isSubmitting) return;
+        setIsLoading(true);
         try {
             setIsSubmitting(true);
             const res = await axios.post(loginEndpoint, loginParam);
@@ -105,7 +108,8 @@ const Login = () => {
                     uid: "",
                     email: loginParam.email,
                     displayName: null,
-                    token: res.data.access
+                    token: res.data.access,
+                    roles: res.data.roles[0]
                 });
                 setToken(res.data.access);
             }
@@ -119,6 +123,7 @@ const Login = () => {
             console.log(error);
         } finally {
             setIsSubmitting(false);
+            setIsLoading(false);
         }
     } 
 
@@ -127,49 +132,77 @@ const Login = () => {
     }, [loginParam]);
 
     return(
-        <div className="w-full h-auto flex flex-col items-center">
-            <Typography 
-                className="pt-4" 
-                variant="h3" 
-                gutterBottom
-                sx={{
-                    fontSize: {
-                        xs: '2rem',     
-                        sm: '2.5rem',   
-                        md: '3rem',     
-                        lg: '3.5rem',   
-                    },
-                    textAlign: 'center',
-                    fontWeight: 'bold'
-                }}
-            >
-                ログイン
-            </Typography>
-            <Box
-                sx={{
-                    height: "auto",
-                    width: "90%",
-                    my: 4,
-                    gap: 4,
-                    p: 2,
-                    border: '1px solid #e0e0e0',
-                    borderRadius: 2,
-                    boxShadow: 3,
-                    bgcolor: 'background.paper'
+        <>
+            {isLoading ? (<Loading title="ログイン中" />) 
+                : 
+            (
+                <div className="w-full h-auto flex flex-col items-center">
+                    <Typography 
+                        className="pt-4" 
+                    variant="h3" 
+                    gutterBottom
+                    sx={{
+                        fontSize: {
+                            xs: '2rem',     
+                            sm: '2.5rem',   
+                            md: '3rem',     
+                            lg: '3.5rem',   
+                        },
+                        textAlign: 'center',
+                        fontWeight: 'bold'
                     }}
-            >
-                {/* Google認証ボタン */}
-                <Stack direction="row" spacing={2} className="flex justify-center">
-                    <Button variant="outlined" startIcon={<FaGoogle />}  className="w-64 h-16" onClick={signInwithGoogle}>
-                        Google認証
-                    </Button>
-                {/* メールアドレスログインフォーム欄 */}
-                </Stack>
-                <div className="my-4 text-center">または</div>
-                <div className="mx-auto flex justify-center">
-                    <FormControl variant="outlined" className="w-2/3">
-                        <div className="my-4">
-                            <InputLabel  
+                >
+                    ログイン
+                </Typography>
+                <Box
+                    sx={{
+                        height: "auto",
+                        width: "90%",
+                        my: 4,
+                        gap: 4,
+                        p: 2,
+                        border: '1px solid #e0e0e0',
+                        borderRadius: 2,
+                        boxShadow: 3,
+                        bgcolor: 'background.paper'
+                        }}
+                >
+                    {/* Google認証ボタン */}
+                    <Stack direction="row" spacing={2} className="flex justify-center">
+                        <Button variant="outlined" startIcon={<FaGoogle />}  className="w-64 h-16" onClick={signInwithGoogle}>
+                            Google認証
+                        </Button>
+                    {/* メールアドレスログインフォーム欄 */}
+                    </Stack>
+                    <div className="my-4 text-center">または</div>
+                    <div className="mx-auto flex justify-center">
+                        <FormControl variant="outlined" className="w-2/3">
+                            <div className="my-4">
+                                <InputLabel  
+                                    shrink 
+                                    sx={{
+                                    position: 'relative',
+                                    transform: 'none',
+                                    fontSize: '1rem',
+                                    fontWeight: 'bold'
+                                    }}
+                                >
+                                    <Typography variant="body1">
+                                    メールアドレス
+                                    </Typography>
+                                </InputLabel>
+                                <TextField
+                                    value={loginParam.email}
+                                    onChange={(e) =>{
+                                        setLoginParam({...loginParam, email: e.target.value})
+                                    }}
+                                    id="input-email"
+                                    variant="outlined"
+                                    placeholder="hoge@example.com"
+                                    fullWidth
+                                />
+                            </div>
+                            <InputLabel 
                                 shrink 
                                 sx={{
                                 position: 'relative',
@@ -179,66 +212,45 @@ const Login = () => {
                                 }}
                             >
                                 <Typography variant="body1">
-                                メールアドレス
+                                パスワード
                                 </Typography>
                             </InputLabel>
                             <TextField
-                                value={loginParam.email}
+                                value={loginParam.password}
                                 onChange={(e) =>{
-                                    setLoginParam({...loginParam, email: e.target.value})
+                                    setLoginParam({...loginParam, password: e.target.value})
                                 }}
-                                id="input-email"
+                                id="input-password"
                                 variant="outlined"
-                                placeholder="hoge@example.com"
+                                type='password'
                                 fullWidth
                             />
-                        </div>
-                        <InputLabel 
-                            shrink 
-                            sx={{
-                            position: 'relative',
-                            transform: 'none',
-                            fontSize: '1rem',
-                            fontWeight: 'bold'
-                            }}
+                        </FormControl>
+                    </div>
+                    <Stack direction="row" spacing={2} className="flex justify-center my-8">
+                        <Button 
+                            variant="outlined" 
+                            startIcon={<MdOutlineEmail />} 
+                            className="w-64 h-16" 
+                            sx={{borderRadius: '30px'}} 
+                            onClick={postHandler}
                         >
-                            <Typography variant="body1">
-                            パスワード
-                            </Typography>
-                        </InputLabel>
-                        <TextField
-                            value={loginParam.password}
-                            onChange={(e) =>{
-                                setLoginParam({...loginParam, password: e.target.value})
-                            }}
-                            id="input-password"
-                            variant="outlined"
-                            type='password'
-                            fullWidth
-                        />
-                    </FormControl>
+                            メールアドレスでログイン
+                        </Button>
+                    </Stack>
+                    <div className="text-center">
+                        <a href="/regist-page" style={{ color: 'blue', textDecoration: 'underline' }}>
+                            会員登録はこちら
+                        </a>
+                    </div>
+                </Box>
+                {/* <Button variant="outlined" color="warning" className="w-32 h-16" onClick={signOutHandler}>
+                        ログアウト
+                </Button> */}
                 </div>
-                <Stack direction="row" spacing={2} className="flex justify-center my-8">
-                    <Button 
-                        variant="outlined" 
-                        startIcon={<MdOutlineEmail />} 
-                        className="w-64 h-16" 
-                        sx={{borderRadius: '30px'}} 
-                        onClick={postHandler}
-                    >
-                        メールアドレスでログイン
-                    </Button>
-                </Stack>
-                <div className="text-center">
-                    <a href="/regist-page" style={{ color: 'blue', textDecoration: 'underline' }}>
-                        会員登録はこちら
-                    </a>
-                </div>
-            </Box>
-            {/* <Button variant="outlined" color="warning" className="w-32 h-16" onClick={signOutHandler}>
-                    ログアウト
-            </Button> */}
-        </div>
+            )}
+            </>
+        
     )
 }
 

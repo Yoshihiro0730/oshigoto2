@@ -37,16 +37,16 @@ const Header = () => {
     }
     return(
         <Box sx = {{ width: "100%" }}>
-            <AppBar position="static" style={{ backgroundColor: '#fff', color: '#000' }}>
+            <AppBar position="fixed" style={{ backgroundColor: '#fff', color: '#000' }}>
                 <Toolbar>
                     <div className="flex items-center flex-grow">
-                        <GiDolphin className="text-2xl mx-2" onClick={handleHome} />
+                        {/* <GiDolphin className="text-2xl mx-2" onClick={handleHome} /> */}
                         <Typography 
                             variant="h4" 
                             component="div" 
                             sx={{ 
                                 flexGrow: 1, 
-                                fontFamily: 'Edu AU Vic WA NT Arrows, serif',
+                                fontFamily: 'Ubuntu, sans-serif',
                                 letterSpacing: '0.1em',
                                 fontWeight: 'bold',
                                 fontSize: {
@@ -59,11 +59,12 @@ const Header = () => {
                                     xs: '0.5rem 0',
                                     sm: '0.75rem 0',
                                     md: '1rem 0'
-                                }
+                                },
+                                color: '#ee7800'
                             }}
+                            onClick={handleHome}
                         >
-                            Oshigoto
-                            
+                            ART+CONNECT
                         </Typography>
                     </div>
                     { currentUser != null ? (
@@ -89,9 +90,10 @@ const Header = () => {
                             }}>
                                 <TiMessages style={{ margin: 'auto' }} />
                             </Box>
-                            <Button variant="outlined" color="warning" className="w-32 h-16" onClick={signOutHandler}>
+                            <Button variant="outlined" color="inherit" className="w-28 h-8" onClick={signOutHandler}>
                                 ログアウト
                             </Button>
+                            
                         </Box>
                     ) : (
                         <Button 
