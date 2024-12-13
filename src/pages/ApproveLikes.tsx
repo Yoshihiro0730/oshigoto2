@@ -4,16 +4,34 @@ import Typography from '@mui/material/Typography';
 import { Box, Grid, Button } from '@mui/material';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 
-interface LikeData {
-    sender__user_id: string;
-    sender__username: string;
-    sender__email: string;
-    created_at: string;
+type LikesData = {
+    profile: {
+        userId?: string,
+        userName?: string,
+        imgUrl?: string,
+        roles?: string,
+        group?: string,
+        awards?: string,
+        birthday?: string,
+        challenges?: string,
+        dislikes?: string,
+        workhistory: string,
+        portfolio: string,
+        specialization: string,
+        free_text: string,
+        job_title: string
+    }
 }
 
+
+
 const ApproveLikes: React.FC = () => {
-    const [likes, setLikes] = useState<LikeData[]>([]);
+    const [likes, setLikes] = useState<LikesData[]>([]);
     const [matchedUserIds, setMatchedUserIds] = useState<string[]>([]);
     const [cookies] = useCookies(['user']);
     const token = cookies.user?.token;
@@ -41,11 +59,15 @@ const ApproveLikes: React.FC = () => {
                     },
                 });
 
+                // const res = await likesResponse.json();
+                // console.log(res.data);
+
                 if (!likesResponse.ok) {
                     throw new Error(`いいねの取得エラー: ${likesResponse.status}`);
                 }
 
                 const likesData = await likesResponse.json();
+                console.log(likesData[0].profile);
                 const receivedLikes = likesData?.data?.received_likes || [];
 
                 // 「マッチング済みユーザー」を取得
@@ -67,7 +89,7 @@ const ApproveLikes: React.FC = () => {
 
                 // マッチング済みユーザーを除外
                 const filteredLikes = receivedLikes.filter(
-                    (like: LikeData) => !matchedIds.includes(like.sender__user_id)
+                    (like: LikesData) => !matchedIds.includes(like.profile.userId)
                 );
 
                 setLikes(filteredLikes);
@@ -101,7 +123,7 @@ const ApproveLikes: React.FC = () => {
 
             console.log("承認成功:", res.data);
             // 承認されたユーザーをリストから削除
-            setLikes((prevLikes) => prevLikes.filter((like) => like.sender__user_id !== senderId));
+            setLikes((prevLikes) => prevLikes.filter((like) => like.profile.userId !== senderId));
         } catch (error) {
             console.error("いいね承認エラー:", error);
         }
@@ -123,7 +145,7 @@ const ApproveLikes: React.FC = () => {
             >
                 <Grid container spacing={3} justifyContent="center" alignItems="center">
                     {likes.map((like) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={like.sender__user_id}>
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={like.profile.userId}>
                             {/* <UserCard
                                 userId={like.sender__user_id}
                                 userName={like.sender__username}
@@ -134,7 +156,7 @@ const ApproveLikes: React.FC = () => {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={() => approveLike(like.sender__user_id)}
+                                    onClick={() => approveLike(like.profile.userId || '')}
                                 >
                                     承認
                                 </Button>

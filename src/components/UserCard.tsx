@@ -12,15 +12,15 @@ import { useAuth } from "../providers/AuthProviders";
 
 type UserCardProps = {
     users:{
-        userId: string,
-        userName: string,
-        imgUrl: string,
-        roles: string,
-        group: string,
-        awards: string,
-        birthday: string,
-        challenges: string,
-        dislikes: string,
+        userId?: string,
+        userName?: string,
+        imgUrl?: string,
+        roles?: string,
+        group?: string,
+        awards?: string,
+        birthday?: string,
+        challenges?: string,
+        dislikes?: string,
         workhistory: string,
         portfolio: string,
         specialization: string,
@@ -38,6 +38,7 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
     const [isHeart, setIsHeart] = useState(false);
     const [cookies] = useCookies(['user']);
     const token = cookies.user?.token;
+    const [likedUser, setLikedUser] = useState([]);
 
     useEffect(() => {
         const fetchLikes = async () => {
@@ -61,9 +62,10 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
                 }
 
                 const data = await res.json();
-                const sentLikes = data?.data?.sent_likes || [];
-                const hasLiked = sentLikes.some((like: any) => like.receiver__user_id === users.userId);
-                console.log(hasLiked);
+                
+                const likesUser = data.map((like: any) => like.sender_id);
+                setLikedUser(likesUser);
+                const hasLiked = likesUser.includes(users.userId);
                 setIsHeart(hasLiked);
             } catch (error) {
                 console.error("いいね情報の取得エラー:", error);
