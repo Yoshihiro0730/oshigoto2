@@ -40,7 +40,7 @@ const Header = () => {
             <AppBar position="fixed" style={{ backgroundColor: '#fff', color: '#000' }}>
                 <Toolbar>
                     <div className="flex items-center flex-grow">
-                        <GiDolphin className="text-2xl mx-2" onClick={handleHome} />
+                        {/* <GiDolphin className="text-2xl mx-2" onClick={handleHome} /> */}
                         <Typography 
                             variant="h4" 
                             component="div" 
@@ -62,6 +62,7 @@ const Header = () => {
                                 },
                                 color: '#ee7800'
                             }}
+                            onClick={handleHome}
                         >
                             ART+CONNECT
                         </Typography>

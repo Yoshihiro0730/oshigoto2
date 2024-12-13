@@ -63,6 +63,7 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
                 const data = await res.json();
                 const sentLikes = data?.data?.sent_likes || [];
                 const hasLiked = sentLikes.some((like: any) => like.receiver__user_id === users.userId);
+                console.log(hasLiked);
                 setIsHeart(hasLiked);
             } catch (error) {
                 console.error("いいね情報の取得エラー:", error);
@@ -100,6 +101,7 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
             }
 
             setIsHeart(true); // いいね送信成功時にボタンを青色に変更
+            console.log("いいねを送信しました。")
         } catch (error) {
             console.error("予期しないエラー:", error);
         }

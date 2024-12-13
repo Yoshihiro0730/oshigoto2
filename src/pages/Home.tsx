@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { Box, Grid } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 interface UserCardProps {
     userId: string,
     userName: string,
@@ -34,6 +35,16 @@ const Home: React.FC = () => {
     const [users, setUsers] = useState<FetchUser[]>([]);
     const navigate = useNavigate();
     const getUserEndpoint = `${process.env.REACT_APP_GET_USER_ENDPOINT}`;
+    const [cookies] = useCookies(['user']);
+    
+    const getUserRole = () => {
+        if (!cookies.user) return '';
+        return cookies.user.roles || '';
+    };
+
+    const userRole = getUserRole();
+    const showArtist = !userRole || userRole === 'artist';
+    const showCreator = !userRole || userRole === 'creator';
 
     const fetchUser = async() => {
         try{
@@ -101,54 +112,59 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         fetchUser();
+        // console.log(cookies.user.roles);
     }, []);
 
     return (
         <>
-            <div className='w-full my-4'>
-                <Typography variant="h4" gutterBottom className="p-4">
-                        制作者
-                </Typography>
-                <Box sx={{ width: '80%', margin: '0 auto', borderRadius: 5 ,backgroundColor: '#f5f5f5', padding: 3 }}> 
-                    <Grid 
-                        container 
-                        spacing={3} 
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        {users.map((user, index) => (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                <UserCard
-                                    users={user}
-                                    onClick={() => handleUserClick(user)}
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
-            </div>
-            <div className='w-full'>
-                <Typography variant="h4" gutterBottom className="p-4">
-                    アーティスト
-                </Typography>
-                <Box sx={{ width: '80%', margin: '0 auto', borderRadius: 5 ,backgroundColor: '#f5f5f5', padding: 3 }}> 
-                    <Grid 
-                        container 
-                        spacing={3} 
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        {users.map((user, index) => (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                <UserCard
-                                    users={user}
-                                    onClick={() => handleUserClick(user)}
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
-            </div>
+            {showArtist && (
+                <div className='w-full my-4'>
+                    <Typography variant="h4" gutterBottom className="p-4">
+                            制作者
+                    </Typography>
+                    <Box sx={{ width: '80%', margin: '0 auto', borderRadius: 5 ,backgroundColor: '#f5f5f5', padding: 3 }}> 
+                        <Grid 
+                            container 
+                            spacing={3} 
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            {users.map((user, index) => (
+                                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                    <UserCard
+                                        users={user}
+                                        onClick={() => handleUserClick(user)}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                </div>
+            )}
+            {showCreator && (
+                <div className='w-full'>
+                    <Typography variant="h4" gutterBottom className="p-4">
+                        アーティスト
+                    </Typography>
+                    <Box sx={{ width: '80%', margin: '0 auto', borderRadius: 5 ,backgroundColor: '#f5f5f5', padding: 3 }}> 
+                        <Grid 
+                            container 
+                            spacing={3} 
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            {users.map((user, index) => (
+                                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                    <UserCard
+                                        users={user}
+                                        onClick={() => handleUserClick(user)}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                </div>
+            )}
         </>
         
     )
