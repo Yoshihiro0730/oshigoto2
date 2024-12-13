@@ -145,7 +145,7 @@ const ApproveLikes: React.FC = () => {
             >
                 <Grid container spacing={3} justifyContent="center" alignItems="center">
                     {likes.map((like) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={like.sender__user_id}>
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={like.profile.userId}>
                             {/* <UserCard
                                 userId={like.sender__user_id}
                                 userName={like.sender__username}
