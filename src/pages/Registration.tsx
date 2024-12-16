@@ -36,7 +36,9 @@ const Resistration = () => {
         try {
             const res = await axios.post(registUserEndpoint,registData, {
                 headers:{
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'ngrok-skip-browser-warning': 'true' ,
+                    'Accept': 'application/json'
                 }
             })
             if(res.data.tokens.access) {
@@ -44,11 +46,12 @@ const Resistration = () => {
                     uid: res.data.user.id || "",
                     email: registData.email,
                     displayName: null,
-                    token: res.data.tokens.access,
-                    roles: res.data.roles[0]
+                    token: res.data.tokens.access || "",
+                    roles: res.data.roles || ""
                 });
                 setToken(res.data.tokens.access);
             }
+            console.log(res.data)
             console.log("登録に成功しました。", res.data.tokens.access)
             navigate("/regist-profile")
         } catch (error) {
@@ -65,7 +68,7 @@ const Resistration = () => {
     }, [registData])
 
     return(
-        <div className="w-full h-auto flex flex-col items-center">
+        <div className="w-full h-auto flex flex-col items-center pt-4">
             <Typography 
                 className="pt-4" 
                 variant="h3" 

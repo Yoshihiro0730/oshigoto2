@@ -136,7 +136,7 @@ const Login = () => {
             {isLoading ? (<Loading title="ログイン中" />) 
                 : 
             (
-                <div className="w-full h-auto flex flex-col items-center">
+                <div className="w-full h-auto flex flex-col items-center pt-4">
                     <Typography 
                         className="pt-4" 
                     variant="h3" 

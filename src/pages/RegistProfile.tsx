@@ -621,7 +621,7 @@ const ResistProfile: React.FC = () => {
                                     <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">職種</InputLabel>
                                         <Select
-                                            name="job"
+                                            name="job_title"
                                             labelId="user-job"
                                             id="use-job"
                                             label="job"

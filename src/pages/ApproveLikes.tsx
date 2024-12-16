@@ -146,7 +146,7 @@ const ApproveLikes: React.FC = () => {
 
             console.log("承認成功:", res.data);
             // 承認されたユーザーをリストから削除
-            setLikes((prevLikes) => prevLikes.filter((like) => like.userId !== senderId));
+            setLikes((prevLikes) => prevLikes.filter((like) => like.userId == senderId));
         } catch (error) {
             console.error("いいね承認エラー:", error);
         }
@@ -173,7 +173,7 @@ const ApproveLikes: React.FC = () => {
                         <Grid container spacing={3} justifyContent="center" alignItems="center">
                             {likedUsers.map((user) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={user.userId}>
-                                    <LikedCard likedUser={user} />
+                                    <LikedCard likedUser={user} onAgreement={() => approveLike(user.userId)} />
                                 </Grid>
                             ))}
                         </Grid>

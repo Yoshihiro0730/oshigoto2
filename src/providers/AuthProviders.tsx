@@ -7,7 +7,7 @@ type User = {
     displayName: string | null;
     email: string | null;
     token: string | null;
-    roles: string | null;
+    roles?: string | null;
     isFirebase?: boolean;
 };
 
