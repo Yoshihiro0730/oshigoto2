@@ -1,18 +1,19 @@
 {
+    "version": 2,
     "routes": [
       {
-        "src": "/manifest.json",
-        "dest": "/manifest.json",
-        "headers": { "Content-Type": "application/json" }
+        "src": "^/static/(.*)",
+        "dest": "/static/$1"
       },
       {
-        "src": "/(.*)",
-        "dest": "/index.html",
-        "headers": {
-          "Cache-Control": "public, max-age=0, must-revalidate"
-        }
+        "src": "^/[^.]+$",
+        "dest": "/index.html"
+      },
+      {
+        "src": "^/(.*)\\.(.+)$",
+        "dest": "/$1.$2"
       }
     ],
-    "buildCommand": "npm run build",
+    "buildCommand": "CI=false npm run build",
     "outputDirectory": "build"
   }
