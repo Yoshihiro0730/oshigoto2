@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { FaHeart } from 'react-icons/fa';
 import { useAuth } from '../providers/AuthProviders';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 type LikedCardProps = {
     likedUser: {
@@ -10,11 +12,27 @@ type LikedCardProps = {
         imgUrl: string;
         job_title: string;
     }
+    onAgreement: () => void;
 };
 
 
-const LikedCard: React.FC<LikedCardProps> = ({ likedUser }) => {
-    const { currentUser, setToken } = useAuth();
+const LikedCard: React.FC<LikedCardProps> = ({ likedUser, onAgreement }) => {
+    const { currentUser } = useAuth();
+    const [cookies] = useCookies(['token']);
+    const navigate = useNavigate();
+    const agreementEndpoint = `${process.env.REACT_APP_APPROVE_LIKE_ENDPOINT}`;
+
+
+    // いいね承諾機能
+    const handleAgreement = async() => {
+        if (!cookies.token) {
+            console.error("トークンが見つかりません。ログインしてください。");
+            navigate('/login');
+            return;
+        }
+
+
+    }
 
     return (
         <div>
@@ -66,7 +84,7 @@ const LikedCard: React.FC<LikedCardProps> = ({ likedUser }) => {
                         size="large" 
                         variant="outlined"
                         color="primary"
-                        // onClick={handleHeart}
+                        onClick={onAgreement}
                     >
                             承諾する
                     </Button> 
