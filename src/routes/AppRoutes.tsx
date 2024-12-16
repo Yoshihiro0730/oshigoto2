@@ -9,11 +9,12 @@ import ProfileImage from '../pages/ProfileImage';
 
 import ApproveLike from '../pages/ApproveLikes';
 import DirectMessage from '../pages/DirectMessage';
-
+import { Navigate } from 'react-router-dom';
 const AppRoutes = () => (
     <>
         <Header />
         <Routes>
+            <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/regist-page" element={<Resistration />} />

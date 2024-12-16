@@ -1,11 +1,18 @@
 {
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/index.html" }
-    ],
-    "builds": [
+    "routes": [
       {
-        "src": "build/**",
-        "use": "@vercel/static"
+        "src": "/manifest.json",
+        "dest": "/manifest.json",
+        "headers": { "Content-Type": "application/json" }
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/index.html",
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate"
+        }
       }
-    ]
+    ],
+    "buildCommand": "npm run build",
+    "outputDirectory": "build"
   }
