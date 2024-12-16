@@ -1,7 +1,4 @@
 {
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/index.html" }
-    ],
     "routes": [
       {
         "src": "/manifest.json",
@@ -10,7 +7,10 @@
       },
       {
         "src": "/(.*)",
-        "dest": "/index.html"
+        "dest": "/index.html",
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate"
+        }
       }
     ],
     "buildCommand": "npm run build",
