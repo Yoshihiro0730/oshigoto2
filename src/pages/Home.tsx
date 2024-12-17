@@ -139,7 +139,7 @@ const Home: React.FC = () => {
                             {users.map((user, index) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                                     {user.roles?.length > 0 && 
-                                    user.roles[0]?.role === "creator" && (
+                                    user.roles[0]?.role === "creator" && user.userId !== cookies.user.uid && (
                                         <UserCard
                                         users={user}
                                         onClick={() => handleUserClick(user)}
@@ -167,7 +167,7 @@ const Home: React.FC = () => {
                             {users.map((user, index) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                                     {user.roles?.length > 0 && 
-                                    user.roles[0]?.role === "artist" && (
+                                    user.roles[0]?.role === "artist" && user.userId !== cookies.user.uid && (
                                         <UserCard
                                         users={user}
                                         onClick={() => handleUserClick(user)}
