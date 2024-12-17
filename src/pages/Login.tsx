@@ -105,7 +105,7 @@ const Login = () => {
             // setIsProfile(res.data.profile_created_at);
             if(res.data.access) {
                 setCustomUser({
-                    uid: "",
+                    uid: res.data.uid,
                     email: loginParam.email,
                     displayName: null,
                     token: res.data.access,

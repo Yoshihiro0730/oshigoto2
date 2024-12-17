@@ -72,12 +72,12 @@ const ApproveLikes: React.FC = () => {
                 }
 
                 const likesData = await likesResponse.json();
-                console.log("apiレスポンス", likesData[0].sender_id);
+                console.log("apiレスポンス", likesData[0].profile.user_name);
 
                 // レスポンス内容を成形
                 const users: LikedCardProps[] = likesData.map( (user: any) => ({
                     userId: user?.sender_id || "",
-                    userName: user?.sender_username || "",
+                    userName: user?.profile.user_name || "",
                     imgUrl: user?.profile?.profile_image_url 
                         ? `${process.env.REACT_APP_PATH}${user.profile.profile_image_url}`
                         : "",

@@ -43,7 +43,7 @@ const Resistration = () => {
             })
             if(res.data.tokens.access) {
                 setCustomUser({
-                    uid: res.data.user.id || "",
+                    uid: res.data.uid || "",
                     email: registData.email,
                     displayName: null,
                     token: res.data.tokens.access || "",

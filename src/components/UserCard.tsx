@@ -66,8 +66,11 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
                 const data = await res.json();
                 
                 const likesUser = data.map((like: any) => like.sender_id);
+                console.log(likesUser);
                 setLikedUser(likesUser);
-                const hasLiked = likesUser.includes(users.userId);
+                const hasLiked = likesUser.includes(cookies.user.uid);
+                console.log(users.userId);
+                console.log(hasLiked);
                 setIsHeart(hasLiked);
             } catch (error) {
                 console.error("いいね情報の取得エラー:", error);
