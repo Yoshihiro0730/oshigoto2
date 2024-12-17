@@ -17,7 +17,9 @@ type FetchUser = {
     userId: string,
     userName: string,
     imgUrl: string,
-    roles: string,
+    roles: {
+        role: string
+    }[] | [],
     group: string,
     awards: string,
     birthday: string,
@@ -28,7 +30,7 @@ type FetchUser = {
     specialization: string,
     free_text: string,
     job_title: string, 
-    gender: string
+    gender: string,
 }
 
 const Home: React.FC = () => {
@@ -73,7 +75,12 @@ const Home: React.FC = () => {
                 free_text: user.profile?.free_text || null,
                 job_title: user.profile?.job_title || null,
                 gender: user.profile?.gender || null
-            }));
+            }))
+            .filter((user: FetchUser) =>
+                    user.roles?.length > 0 
+                && 
+                    user.roles[0]?.role !== "admin"
+            );
             console.log(users);
             setUsers(users);
         } catch (error) {
@@ -131,10 +138,14 @@ const Home: React.FC = () => {
                         >
                             {users.map((user, index) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                    <UserCard
+                                    {user.roles?.length > 0 && 
+                                    user.roles[0]?.role === "creator" && (
+                                        <UserCard
                                         users={user}
                                         onClick={() => handleUserClick(user)}
-                                    />
+                                        />
+                                    )}
+                                    
                                 </Grid>
                             ))}
                         </Grid>
@@ -155,12 +166,16 @@ const Home: React.FC = () => {
                         >
                             {users.map((user, index) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                    <UserCard
+                                    {user.roles?.length > 0 && 
+                                    user.roles[0]?.role === "artist" && (
+                                        <UserCard
                                         users={user}
                                         onClick={() => handleUserClick(user)}
-                                    />
+                                        />
+                                    )}
                                 </Grid>
-                            ))}
+                                )
+                            )}
                         </Grid>
                     </Box>
                 </div>
