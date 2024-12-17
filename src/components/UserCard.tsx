@@ -15,7 +15,9 @@ type UserCardProps = {
         userId?: string,
         userName?: string,
         imgUrl?: string,
-        roles?: string,
+        roles?: {
+            role: string
+        }[] | [],
         group?: string,
         awards?: string,
         birthday?: string,
