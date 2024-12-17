@@ -18,7 +18,7 @@ type UserProfileProps = {
         workhistory: string,
         portfolio: string,
         specialization: string,
-        free_text: string,
+        description: string,
         job_title: string,
         gender: string
     }
@@ -216,7 +216,7 @@ const UserProfile = () => {
                                 marginBottom: 4 
                             }}
                         >
-                            {user.free_text}
+                            {user.description}
                         </Typography>
                     </div>
                 
