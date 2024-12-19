@@ -32,16 +32,19 @@ type UserCardProps = {
     onClick?: () => void,
 }
 
+type LikedUser = {
+    userId: string,
+}
+
 const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
     const getLikesEndpoint = `${process.env.REACT_APP_GET_LIKES_ENDPOINT}`; 
     const sendLikeEndpoint = `${process.env.REACT_APP_SEND_LIKE_ENDPOINT}`;
-    // const getLikesEndpoint = "https://9453-1-75-223-48.ngrok-free.app/api/get-likes/"; 
-    // const sendLikeEndpoint = "https://9453-1-75-223-48.ngrok-free.app/api/send-like/";
+    const getSendLikesEndpoint = `${process.env.REACT_APP_GET_SEND_LIKE_ENDPOINT}`;
     const [isHeart, setIsHeart] = useState(false);
     const [cookies] = useCookies(['user']);
     const token = cookies.user?.token;
     const [likedUser, setLikedUser] = useState([]);
-
+    const [sendLikedUser, setSendLikedUser] = useState([]);
     useEffect(() => {
         const fetchLikes = async () => {
             if (!token) {
@@ -68,10 +71,27 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
                 const likesUser = data.map((like: any) => like.sender_id);
                 console.log(likesUser);
                 setLikedUser(likesUser);
-                const hasLiked = likesUser.includes(cookies.user.uid);
+
+                // 自分が送ったいいねを取得
+                const resLiked = await fetch(getSendLikesEndpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                const dataLiked = await resLiked.json();
+                const sendLikedUser = dataLiked.map((like: any) => like.receiver_id);
+                console.log("IDリスト" ,dataLiked);
+                setSendLikedUser(sendLikedUser);
+                const hasLiked = sendLikedUser.includes(users.userId);
                 console.log(users.userId);
                 console.log(hasLiked);
                 setIsHeart(hasLiked);
+                
+                console.log("自分が送ったいいね:", sendLikedUser);
             } catch (error) {
                 console.error("いいね情報の取得エラー:", error);
             }
@@ -82,7 +102,7 @@ const UserCard: React.FC<UserCardProps> = ({ users, onClick }) => {
 
     const handleHeart = async () => {
         if (isHeart) {
-            console.log("既にいいね済みです。");
+            alert("既にいいね済みです。");
             return;
         }
 
