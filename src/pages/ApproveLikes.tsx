@@ -145,6 +145,7 @@ const ApproveLikes: React.FC = () => {
             );
 
             console.log("承認成功:", res.data);
+            alert("マッチングしました！");
             // 承認されたユーザーをリストから削除
             setLikes((prevLikes) => prevLikes.filter((like) => like.userId == senderId));
         } catch (error) {
